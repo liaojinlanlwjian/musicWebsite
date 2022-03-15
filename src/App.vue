@@ -156,7 +156,7 @@
   }
 
   .content-wrapper .content {
-    padding: 1.25rem;
+    /* padding: 1.25rem; */
   }
 
   .content-wrapper.slideCollapse{

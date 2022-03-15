@@ -34,12 +34,13 @@
                 <el-card shadow="hover" >
                <div style="display:flex">
                    <div style="width:5%;text-align:center;line-height:72px">
-                       <span style="font-size:18px;">1</span>
+                       <span style="font-size:18px;">{{o}}</span>
                    </div>
-                   <div style="width:5%;text-align:center;"  @click="jumpMusic" >
+                   <div style="width:5%;text-align:center;position: relative;"  @click="jumpMusic" >
                       <img
                         style="width:100%;"
                         :src="require('../../assets/liebiao1.jpg')">
+                    <div class="player"></div>
                    </div>
                    <div style="width:10%;text-align:center;line-height:40px" @click="jumpMusic" >
                       <div>
@@ -50,7 +51,7 @@
                       </div>
                    </div>
                    <div style="width:80%;text-align:right;line-height:72px">
-                       <el-button style="border-radius:14px">like</el-button>
+                       <el-button style="border-radius:14px" @click="likeClick(o)" ref="rrrr" >like</el-button>
                        <el-button style="border-radius:14px" icon="fa fa-play-circle" circle>Listen</el-button>
                    </div>
                </div>
@@ -199,10 +200,36 @@ export default {
   methods: {
       jumpMusic(){
           this.$router.push('/musicPage/musicdetail')
-      }
+      },
+      likeClick(o){
+         if (this.$refs.rrrr[o-1].$el.style.color == 'rgb(249, 89, 95)') {
+             this.$refs.rrrr[o-1].$el.style.color = ''
+             this.$refs.rrrr[o-1].$el.style.border = ''
+             return
+         }
+         this.$refs.rrrr[o-1].$el.style.color = '#f9595f'
+         this.$refs.rrrr[o-1].$el.style.border = '1px solid #f9595f'
+
+      },
   }
 };
 </script>
  
-<style>
+<style scoped>
+.player{
+    opacity:0.1; 
+    width:73px;
+    height:74px;
+    position: absolute;
+    top: -0.1px;
+    left: 1px;
+    display: block;
+}
+.player:hover{
+    opacity:0.9; 
+    background:#282c34; 
+    background-image: url('../../assets/musicplay.png');
+    background-size: 100% 100%;
+            background-repeat: no-repeat;
+}
 </style>

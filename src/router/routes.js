@@ -22,6 +22,7 @@ import mylike from "../pages/passion/mylike.vue";
 import radio from "../pages/passion/radio.vue";
 import index from "../pages/index/index.vue";
 import musicdetail from "../pages/musicPage/musicdetail.vue";
+import musicPlayer from "../pages/musicPage/musicPlayer.vue";
 // Routes
 const routes = [
   {path: '/login', component: login},
@@ -37,6 +38,7 @@ const routes = [
     {path: '/passion/mylike', component: mylike},
     {path: '/passion/radio', component: radio},
     {path: '/musicPage/musicdetail', component: musicdetail},
+    {path: '/musicPage/musicPlayer', component: musicPlayer},
     {path: '/resetPwd', component: resetPwd},
     {path: '/', component: index},
     {path: '/sys/menuList', component: menuList},

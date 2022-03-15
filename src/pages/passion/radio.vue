@@ -1,6 +1,6 @@
 <template>
   <div>
-      <h1> radius</h1>
+      <h1> video</h1>
   </div>
 </template>
 

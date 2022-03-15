@@ -11,7 +11,7 @@ export default {
   {"id":31,"parentId":null,"sort":1,"name":"BROWSE","href":"/musicPage",
   "children":[
   {"id":92,"parentId":31,"sort":0,"name":"搜索","href":"/musicPage/musicSearch","icon":"fa fa-search","children":[],"isShow":"1"},
-  {"id":94,"parentId":31,"sort":2,"name":"播放列表","href":"/musicPage/playlist","icon":"fa fa-play-circle","children":[],"isShow":"1"},
+  {"id":94,"parentId":31,"sort":2,"name":"最近播放","href":"/musicPage/playlist","icon":"fa fa-play-circle","children":[],"isShow":"1"},
 ],"isShow":"1"},
 
 {"id":131,"parentId":null,"sort":1,"name":"PASSION","href":"/passion",
