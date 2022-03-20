@@ -11,7 +11,9 @@ import Element from "element-ui";
 import 'element-ui/lib/theme-default/index.css';
 import ImpPanel from "./components/panel.vue";
 import vueAplayer from 'vue-aplayer'
+import AudioVisual from 'vue-audio-visual'
  
+Vue.use(AudioVisual)
 Vue.use(vueAplayer)
 Vue.prototype.$http = axios
 Vue.axios = axios

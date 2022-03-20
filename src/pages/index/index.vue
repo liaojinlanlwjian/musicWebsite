@@ -30,24 +30,24 @@
         </div>
         </div>
         <div style="width:90%;height:auto;margin:0px auto">
-             <div v-for="o in 4" :key="o" class="text item" style="padding-bottom:10px">
+             <div v-for="(o,i) in recommend" :key="i" class="text item" style="padding-bottom:10px">
                 <el-card shadow="hover" >
                <div style="display:flex">
                    <div style="width:5%;text-align:center;line-height:72px">
-                       <span style="font-size:18px;">{{o}}</span>
+                       <span style="font-size:18px;">{{i+1}}</span>
                    </div>
-                   <div style="width:5%;text-align:center;position: relative;"  @click="jumpMusic" >
+                   <div style="width:5%;text-align:center;position: relative;"  @click="jumpMusic(o)" >
                       <img
                         style="width:100%;"
-                        :src="require('../../assets/liebiao1.jpg')">
+                        :src="o.musicCover">
                     <div class="player"></div>
                    </div>
-                   <div style="width:10%;text-align:center;line-height:40px" @click="jumpMusic" >
+                   <div style="width:10%;text-align:center;line-height:40px" @click="jumpMusic(o)" >
                       <div>
-                          <span>电线杆上的鸟</span>
+                          <span>{{ o.musicName }}</span>
                       </div>
                       <div>
-                          <span>LOCY</span>
+                          <span>{{ o.musicAuthor }}</span>
                       </div>
                    </div>
                    <div style="width:80%;text-align:right;line-height:72px">
@@ -161,6 +161,7 @@
 </template>
  
 <script>
+const API_PROXY = 'https://bird.ioliu.cn/v1/?url='
 export default {
   components: {},
   data() {
@@ -191,15 +192,30 @@ export default {
           src: require("../../assets/lubo5.jpg"),
           title: "走么？"
         }
-      ]
+      ],
+      recommend:[]
     };
   },
-  created() {},
-  mounted() {},
+  created() {
+      this.queryData()
+  },
+ mounted: function () {
+    //  this.$http.get('/proxy/lyric?id=33894312').then(({data}) =>{
+    //   console.log(data)
+    // })
+  },
   computed: {},
   methods: {
-      jumpMusic(){
-          this.$router.push('/musicPage/musicdetail')
+      queryData(){
+          this.$http.get('/api/recommend/queryAllRecommend/?start=' + 0).then((response)=>{
+            this.recommend = response.data.data
+            console.log(this.recommend);
+          }).catch((response)=>{
+            console.log(response);
+          })
+      },
+      jumpMusic(o){
+          this.$router.push({path:'/musicPage/musicdetail',query: {id:o.id}})
       },
       likeClick(o){
          if (this.$refs.rrrr[o-1].$el.style.color == 'rgb(249, 89, 95)') {

@@ -29,13 +29,23 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      // http://localhost:9000/api/menuList => http://localhost:3000/menuList
-      '/api': {
-        target: 'http://127.0.0.1:3000',
+      '/api':{
+        target:'http://localhost:3001',
+        changeOrigin:true,
+        pathRewrite:{
+          '^/api^':'/' 
+        }
+      },
+      "/proxy": {
+        target: "http://localhost:3000",
+        secure: false,
         changeOrigin: true,
         pathRewrite: {
-          '^/api' : '',     // rewrite path
+          "^/proxy": "/"
         },
+        headers: {
+          "User-Agent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Mobile Safari/537.36"
+        }
       }
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"
