@@ -1,13 +1,13 @@
 <template>
   <div>
-      <div style="width:100%;height:400px;background:#4c3821;margin-top:-20px">
-        <div style="width:30%;height:400px;text-align:center;padding:20px;background:#fff;position:absolute;top:160px;left:100px">
+      <div style="width:100%;height:200px;background:#4c3821;margin-top:-20px">
+        <div style="width:30%;height:;text-align:center;padding:20px;background:#fff;position:absolute;top:100px;left:100px">
           <img
             style="width:90%;height:100%"
             :src="msg.musicCover">
           <div class="player"></div>
         </div>
-        <div style="width:30%;height:auto;line-height:45px;padding:20px;position:absolute;top:160px;left:40%">
+        <div style="width:35%;height:auto;line-height:45px;padding:20px;position:absolute;top:100px;left:40%">
           <div>
             <h1 style="color:#ffffff;font-size:34px">{{ msg.musicName }}</h1>
             <p style="color:#c7c0bd;font-size:24px">{{ msg.musicType }}<p/>
@@ -29,8 +29,8 @@
           </div>
         </div>
         <div style="width:30%;height:50px;text-align:center;position:absolute;top:35%;left:66%">
-          <el-button style="border-radius:14px" @click="likeClick" ref="aaa" >like</el-button>
-          <el-button style="border-radius:14px" icon="fa fa-play-circle" @click="musicPlayer" circle>Listen</el-button>
+          <el-button style="border-radius:14px" @click="likeClick" ref="aaa" ><i class="fa fa-heart" ref="likeIcon"></i></el-button>
+          <el-button style="border-radius:14px"  @click="musicPlayer" circle><i class="fa fa-play" ref="likeIcon"></i></el-button>
         </div>
       </div>
       <div class="middile">
@@ -62,12 +62,7 @@ methods:{
           })
   },
   musicPlayer(){
-    console.log(this.msg.musicApi);
-   this.$router.push({path:'/musicPage/musicPlayer',query: {musicId:this.msg.musicApi,
-   musicPic:this.msg.musicCover,
-   musicName:this.msg.musicName,
-   musicAuthor:this.msg.musicAuthor,
-   
+   this.$router.push({path:'/musicPage/musicPlayer',query: {id:this.msg.id
    }})
     // this.$router.push('/musicPage/musicPlayer')
 
@@ -90,15 +85,14 @@ methods:{
 .middile{
   width: 90%;
   height: 300px;
-  margin: 0px auto;
+  margin: 280px auto 50px auto;
   border: 1px solid red;
-  margin-top: 180px;
 }
 .player{
     opacity:0.1; 
     /* background: #282c34; */
-    width:100%;
-    height:400px;
+    width:95%;
+    height:180px;
     position: absolute;
     top: -0.1px;
     left: 1px;

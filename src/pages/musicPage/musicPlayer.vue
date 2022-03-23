@@ -2,14 +2,10 @@
   <div>
      
     <el-row :gutter="20" >
-        <el-col style="text-align:right" :span="12">
-       
-<!-- <div style="width:300px;height:300px"> -->
-<img style="width:600px;height:600px" :src="singPic" alt="">
-<!-- </div> -->
-
-
-
+        <el-col  :span="12">
+        <div style="margin:100px auto;width:100%;height:100%;text-align:center">
+        <img style="width:300px;height:300px" :src="msg.musicCover" :title="msg.musicName">
+        </div>
         </el-col>
         <el-col :span="12">
         
@@ -20,30 +16,25 @@
                 </p>
             </div>
             
-            <!-- <ul class="lyric"  >
-                <div style="width:100%;text-align:center;">
-            <h1>{{singName}}</h1>
-            <h3>{{singAuthor}}</h3>
-        </div>
-                <li ref="lrc" :class="{'active': currentTime > allkey[index] && currentTime < allkey[index+1]}"  v-for="(item, key,index) in lrcData" :key="index">
-                     <p >{{item}}{{ scrollLrc(index) }}</p>
-                </li>
-             </ul> -->
         </div>
         <audio v-show="false" ref="player" style="margin-left:60px" :src="audioUrl" width=300 height=45 type=audio/mpeg  controls   volume="0"></audio>
-        <!-- <el-button @click="listening">播放</el-button> -->
-        <div style="width:100%;height:80px;display:flex">
+        <div style="width:100%;height:auto;display:flex">
+            <div style="width:10%">{{currentMusicTime}}</div>
+            <div style="width:80%;text-align:center"><el-progress style="margin-top:3px" :percentage="currentTime" status="success" ></el-progress></div>
+            <div style="width:10%">{{totalTime}}</div>
+        </div>
+        
+        <div style="width:100%;height:auto;display:flex">
             <div style="width:20%"></div>
             <div style="width:20%;text-align:center">
-                <img style="width:120px;height:120px" :src="require('../../assets/upxt.png')" alt="">
-
+                <img style="width:120px;height:120px" @click="upxt()" :src="require('../../assets/upxt.png')" alt="">
             </div>
             <div style="width:20%;text-align:center">
                 <img style="width:120px;height:120px" v-if="tingzhi"  @click="listening" :src="require('../../assets/bofang.png')" alt="">
                 <img style="width:120px;height:120px" v-if="!tingzhi"   @click="listening" :src="require('../../assets/praus.png')" alt="">
             </div>
             <div style="width:20%;text-align:center">
-                <img style="width:120px;height:120px" :src="require('../../assets/next.png')" alt="">
+                <img style="width:120px;height:120px" @click="next()" :src="require('../../assets/next.png')" alt="">
             </div>
             <div style="width:20%"></div>
         </div>
@@ -74,47 +65,103 @@ export default {
                currentTime:0,
                allkey:[],
                token:0,
-               tingzhi:false
+               tingzhi:false,
+               totalTime:'',
+               currentMusicTime:'',
+               tempMusicId:'',
+               msg:{
+                   
+               }
            
         }
       },
      mounted: function () {
-        //   console.log(this.$route.query.musicId);
-        //   console.log(this.$route.query.musicPic);
-        //   console.log(this.$route.query.musicAuthor);
-        //   console.log(this.$route.query.musicName);
-          this.singId = this.$route.query.musicId
-          this.singPic = this.$route.query.musicPic
-          this.singName = this.$route.query.musicName
-          this.singAuthor = this.$route.query.musicAuthor
-          this.getGeCi()
-          this.getGeCiUrl()
-          this.addEventHandle()
-          this.$refs.lrc.style.top = 0 + 'px'
+          this.queryMusic(this.$route.query.id)
+          
       },
       beforeDestroy(){
           this.removeEventHandle()
       },
 methods:{
+queryMusic(id){
+console.log(id);
+this.$http.get(`/api/music/querySingleMusic/?id=` + id).then((response)=>{
+          this.msg = response.data.data[0]
+          this.tempMusicId = this.msg.id
+          this.getGeCi()
+          this.getGeCiUrl()
+          this.addEventHandle()
+          this.msg['user'] = 'admin'
+          }).catch((response)=>{
+            console.log(response);
+          })
+},
+//下一首
+next(){
+this.$http.get(`/api/recent/queryNextSing/?id=` + this.tempMusicId).then(res=>{
+            this.queryMusic(res.data.data[0].id)
+            this.removeEventHandle()
+            this.tingzhi = false
+            this.token = 0
+            this.$refs.player.currentTime = 0
+            this.$refs.lrc.style.top = 0 + 'px'
+            this.$message.info(res.data.msg)
+          }).catch((response)=>{
+            console.log(response);
+          })
+},
+//上一首
+upxt(){
+    this.$http.get(`/api/recent/queryUpxtSing/?id=` + this.tempMusicId).then(res=>{
+            this.queryMusic(res.data.data[0].id)
+            this.removeEventHandle()
+            this.tingzhi = false
+            this.token = 0
+            this.$refs.lrc.style.top = 0 + 'px'
+            this.$refs.player.currentTime = 0
+            this.$message.info(res.data.msg)
+          }).catch((response)=>{
+            console.log(response);
+          })
+},
 listening(){
     if(this.token == 0){
         this.$refs.player.play()
+        this.totalTime = this.dealMusicTime(parseInt(this.$refs.player.duration))
         this.token = 1
         this.tingzhi = true
+        this.$refs.lrc.style.top = 0 + 'px'
+        this.$refs.player.currentTime = 0
+        this.$http.post(`/api/recent/addRecentPlay`,this.msg).then(res=>{
+          console.log(res);
+        })
     }else{
         this.$refs.player.pause()
         this.token = 0
         this.tingzhi = false
     }
-    
+},
+//处理音乐时间
+dealMusicTime(s){
+        var h;
+        h  =   Math.floor(s/60);
+        //计算秒
+        //算法：取得秒%60的余数，既得到秒数
+        s  =   s%60;
+        //将变量转换为字符串
+        h    +=    '';
+        s    +=    '';
+        //如果只有一位数，前面增加一个0
+        h  =   (h.length==1)?'0'+h:h;
+        s  =   (s.length==1)?'0'+s:s;
+        return h+':'+s;
 },
 getGeCi(){
-     this.$http.get('/proxy/lyric?id=' + this.singId).then(({data}) =>{
-    //   console.log(data)
-    //   this.parsingGeci(data)
+     this.$http.get('/proxy/lyric?id=' + this.msg.musicApi).then(({data}) =>{
       this.filterLrc(data.lrc.lyric)
     })
 },
+
 addEventHandle(){
     this.$refs.player.addEventListener('timeupdate',this.currentTimeHandle)
 },
@@ -122,8 +169,9 @@ removeEventHandle(){
     this.$refs.player.removeEventListener('timeupdate',this.currentTimeHandle)
 },
 currentTimeHandle(){
+    this.currentMusicTime = this.dealMusicTime(parseInt(this.$refs.player.currentTime))
     this.currentTime = this.$refs.player.currentTime
-},
+    },
 filterLrc(values){
 if (!values) return;
 var lrc = {}
@@ -155,14 +203,15 @@ for(var key in lrcArr){
 scrollLrc(index){
 if(this.currentTime > this.allkey[index] && this.currentTime <this.allkey[index+1]){
 this.$refs.lrc.style.top = -(30 * (index-3)) + "px"
-
 }
 },
 getGeCiUrl(){
-     this.$http.get('/proxy/song/url?id=' + this.singId).then(({data}) =>{
-        //  console.log(data.data[0].url);
+     this.$http.get('/proxy/song/url?id=' + this.msg.musicApi).then(({data}) =>{
       this.audioUrl = data.data[0].url
-    //   this.parsingGeci(data)
+      console.log(this.msg);
+    //   let Msgdata = this.$qs.stringify(this.msg)
+    //   console.log(Msgdata);
+     
     })
 },
 parsingGeci(data){
@@ -190,7 +239,7 @@ parsingGeci(data){
 <style scoped>
 .lrcCon{
     width: 100%;
-    height: 500px;
+    height: 450px;
     overflow: hidden;
     position: relative;
 }
@@ -199,7 +248,7 @@ parsingGeci(data){
         /* height: 500px; */
         position: absolute;
         top: 0;
-        background-color: #f5f5f5;
+        /* background-color: #f5f5f5; */
         overflow: auto;
         color: #6f6e6e;
         font-size: 14px;

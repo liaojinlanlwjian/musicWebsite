@@ -12,12 +12,14 @@ import 'element-ui/lib/theme-default/index.css';
 import ImpPanel from "./components/panel.vue";
 import vueAplayer from 'vue-aplayer'
 import AudioVisual from 'vue-audio-visual'
- 
+import qs from 'qs'
 Vue.use(AudioVisual)
 Vue.use(vueAplayer)
 Vue.prototype.$http = axios
 Vue.axios = axios
 Vue.http = axios;
+
+Vue.prototype.$qs = qs
 Vue.use(axios);
 Vue.use(VueRouter);  //使用路由
 import Cookies from 'js-cookie' // 引入

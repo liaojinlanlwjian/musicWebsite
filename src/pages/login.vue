@@ -1,4 +1,6 @@
-<template lang="html">
+<template>
+<div>
+<template>
   <el-row>
     <el-col :span="12" :offset="6">
       <div class="login">
@@ -10,7 +12,7 @@
               <div><h1>MyFree</h1></div>
               <div style="color:#f90251"><h1>MP3</h1></div>
             </div>
-            <p class="text-muted">任意用户名/密码登录</p>
+            <!-- <p class="text-muted">任意用户名/密码登录</p> -->
             <div class="input-group m-b-1">
               <span class="input-group-addon"><i class="fa fa-user"></i></span>
               <input type="text" class="form-control" placeholder="user name" v-model="form.username">
@@ -37,21 +39,31 @@
         <div class="login-register">
           <div class="card-block">
             <h2>注册</h2>
-            <p>平台暂时只支持使用公司邮箱注册.</p>
-            <el-button type="info" class="btn btn-primary active m-t-1"> 马上注册</el-button>
+            <p>开始你的音乐之旅吧</p>
+            <el-button type="info" class="btn btn-primary active m-t-1" @click="ecroll"> 马上注册</el-button>
           </div>
         </div>
         </el-col>
         </el-row>
       </div>
     </el-col>
+
   </el-row>
+  </template>
+      <ecroll
+    :dialog-visible="dialogVisible"
+    @close-dialog="dialogVisible = false"
+    ></ecroll>
+    
+</div>
+
 </template>
 
 <script>
   import types from '../store/mutation-types'
   import * as api from "../api"
   import  auth from '../common/auth'
+  import  ecroll from '../components/ecroll'
   import * as sysApi from '../services/sys'
   import {mapGetters, mapActions, mapMutations} from 'vuex'
 
@@ -59,13 +71,15 @@
     name: 'login',
     data() {
       return {
+          dialogVisible:false,
+          
         form: {
           username: '',
-          password: ''
+          password: '',
         }
       }
     },
-    components: {},
+    components: {ecroll},
     methods: {
       ...mapMutations({
         setUserInfo: types.SET_USER_INFO
@@ -73,6 +87,10 @@
       ...mapActions({
         loadMenuList: 'loadMenuList' // 映射 this.load() 为 this.$store.dispatch('loadMenuList')
       }),
+      ecroll(){
+        console.log('000');
+        this.dialogVisible = true
+      },
       login(){
         var redirectUrl = '/';
         if (this.$route.query && this.$route.query != null && this.$route.query.redirect && this.$route.query.redirect != null) {
@@ -89,7 +107,8 @@
         this.$http.defaults.headers.common['authSid'] = sid;
         this.loadMenuList();
         redirectUrl && this.$router.push({path: redirectUrl});
-      }
+      },
+      
     }
   }
 </script>

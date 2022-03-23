@@ -113,10 +113,11 @@
   .main-sidebar {
     background-color: #ffffff;
     position: fixed;
-    top: 50px;
-    left: 0;
-    bottom: 0;
-    height: calc(100vh - 50px);
+    top: 150px;
+    /* left: 0; */
+    /* bottom: 0; */
+    /* height: calc(100vh - 50px); */
+    height: 62%;
     width: 44px;
     z-index: 810;
     -webkit-transition: -webkit-transform 0.3s ease-in-out, width 0.3s ease-in-out;
@@ -160,7 +161,8 @@
 
   .vue-scrollbar{
     background-color: #ffffff !important;
-    height: calc(100vh - 50px)
+    /* height: calc(100vh - 50px) */
+    height: 500px;
   }
 
   .main-sidebar .el-scrollbar__bar.is-vertical{

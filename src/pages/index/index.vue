@@ -1,7 +1,7 @@
 <!--home-->
 <template>
   <div>
-    <el-carousel trigger="click" height="420px" :interval="3000" arrow="always" style="width:98%">
+    <el-carousel trigger="click" height="220px" :interval="3000" arrow="always" style="width:100%">
       <el-carousel-item v-for="item in imgList" :key="item.id">
         <img :src="item.src" style="height:100%;width:100%;" alt="图片丢失了" :title="item.title" />
       </el-carousel-item>
@@ -33,26 +33,29 @@
              <div v-for="(o,i) in recommend" :key="i" class="text item" style="padding-bottom:10px">
                 <el-card shadow="hover" >
                <div style="display:flex">
-                   <div style="width:5%;text-align:center;line-height:72px">
+                   <div style="width:5%;height:100%;text-align:center;line-height:100px">
                        <span style="font-size:18px;">{{i+1}}</span>
                    </div>
-                   <div style="width:5%;text-align:center;position: relative;"  @click="jumpMusic(o)" >
+                   <div style="width:12%;text-align:center;position: relative;"  @click="jumpMusic(o)" >
                       <img
                         style="width:100%;"
                         :src="o.musicCover">
                     <div class="player"></div>
                    </div>
-                   <div style="width:10%;text-align:center;line-height:40px" @click="jumpMusic(o)" >
-                      <div>
+                   <div style="width:20%;text-align:center;padding:10px" @click="jumpMusic(o)" >
+                       <div style="margin:20px auto">
+                           <div>
                           <span>{{ o.musicName }}</span>
-                      </div>
-                      <div>
-                          <span>{{ o.musicAuthor }}</span>
-                      </div>
+                            </div>
+                            <div>
+                                <span>{{ o.musicAuthor }}</span>
+                            </div>
+                       </div>
+                      
                    </div>
-                   <div style="width:80%;text-align:right;line-height:72px">
-                       <el-button style="border-radius:14px" @click="likeClick(o)" ref="rrrr" >like</el-button>
-                       <el-button style="border-radius:14px" icon="fa fa-play-circle" circle>Listen</el-button>
+                   <div style="width:80%;height:100%;text-align:right;line-height:100px">
+                       <el-button style="border-radius:14px" @click="likeClick(o)" ref="rrrr" ><i class="fa fa-heart" ref="likeIcon"></i></el-button>
+                       <el-button style="border-radius:14px" circle><i class="fa fa-play" ref="likeIcon"></i></el-button>
                    </div>
                </div>
             </el-card>
@@ -63,9 +66,9 @@
     <div style="display:flex;width:90%;margin:0px auto">
         <div style="width:50%">
             <div style="width:100%;height:80px;line-height:80px;text-align:left;color:#222222;font-size:24px">派歌</div>
-            <div style="width:100%;height:500px;background:#555b5e;text-align:center;">
+            <div style="width:100%;height:auto;background:#555b5e;text-align:center;">
                 <img
-                    style="width:auto;"
+                    style="max-width: 100%;max-height: 80%;"
                     :src="require('../../assets/paige.jpg')">
                 <div>
                     <h1 style="color:#ffffff">【独“字”玩乐】谁说这里“无独有偶”？才不！</h1>
@@ -76,27 +79,27 @@
         </div>
         <div style="width:50%;margin-left:10%">
             <div style="width:100%;height:80px;line-height:80px;text-align:left;color:#222222;font-size:24px">大事</div>
-            <div style="width:90%;border:1px solid red;display:flex;height:230px;background:#4a303e">
-            <div style="width:40%;">
+            <div style="width:100%;display:flex;height:230px;background:#4a303e">
+            <div style="width:50%;display: flex;justify-content: center;align-items: center;  ">
                     <img
-                style="width:200px;height:200px;margin:12px"
+                style="max-width: 100%;max-height: 100%;"
                 :src="require('../../assets/dashi1.jpg')">
             </div>
             <div>
-            <div style="padding-top:20%">
+            <div style="padding:24% 5%">
                 <h1 style="color:#ffffff">Favours!偏袒乐队：巡演在外，帽子也能当眼罩用</h1>
                 <span style="color:#bdc3c5">一场电子摇滚演出的背后</span>
             </div>
         </div>
             </div>
-            <div style="width:90%;border:1px solid red;display:flex;height:230px;background:#10100f;margin-top:40px">
-                <div style="width:40%;">
+            <div style="width:100%;display:flex;height:230px;background:#10100f;margin-top:40px">
+                <div style="width:50%;display: flex;justify-content: center;align-items: center; ">
                      <img
-                    style="width:200px;height:200px;margin:12px"
+                    style="max-width: 100%;max-height: 100%;"
                     :src="require('../../assets/dashi2.jpg')">
                 </div>
                 <div>
-                <div style="padding-top:20%">
+                <div style="padding:24% 5%">
                     <h1 style="color:#ffffff">女性音乐人特辑：希望不要继续忽略弱者的痛楚</h1>
                     <span style="color:#bdc3c5">借歌曲去表达自己当下最真实的情绪状态。</span>
                 </div>
@@ -115,11 +118,11 @@
             <el-button type="danger" style="border-radius:10px"  icon="fa fa-play-circle">更多歌曲</el-button>
         </div>
         </div>
-        <div style="display:flex;margin-left:8%">
-            <div v-for="o in 4" :key="o" class="text item" style="width:23%" >
+        <div style="display:flex;width:100%">
+            <div v-for="o in 4" :key="o" class="text item" style="margin:20px">
                 <div style="width:100%">
                      <img
-                    style="width:auto;"
+                    style="max-width: 100%;max-height: 100%;"
                     :src="require('../../assets/recommended1.jpg')">
                 </div>
                 <div><h2>孤独星球</h2></div>
@@ -232,6 +235,16 @@ export default {
 </script>
  
 <style scoped>
+.buttonIcon{
+    background-color: transparent;
+    background-image: none;
+    padding: 15px 15px;
+    font-family: fontAwesome;
+    line-height: 20px;
+}
+.buttonIcon::before{
+    content: "\f03b";
+}
 .player{
     opacity:0.1; 
     width:73px;

@@ -8,6 +8,9 @@
          @click.stop.prevent="toggleMenu(!sidebar.collapsed,device.isMobile)">
         <span class="sr-only">Toggle navigation</span>
       </a>
+      <a href="#" class="sidebar-toggle2"  role="button"
+         @click.stop.prevent="backRouter">
+      </a>
       <div class="navbar-custom-menu">
         <el-dropdown class="navbar-dropdown" trigger="click">
           <div class="el-dropdown-link" style="height: auto;line-height: inherit">
@@ -76,6 +79,9 @@
       device:'device',
     }),
     methods: {
+      backRouter(){
+        this.$router.go(-1)
+      },
       toggleMenu(collapsed,isMobile){
         if(isMobile){
           this.toggleSidebarShow();
@@ -150,7 +156,7 @@
 
   .main-header {
     position: fixed;
-    min-width: 100%;
+    min-width: 70%;
     box-shadow: 0 2px 3px hsla(0, 0%, 7%, .1), 0 0 0 1px hsla(0, 0%, 7%, .1);
     z-index: 1999;
     animation-name: slideInDown;
@@ -165,6 +171,17 @@
     padding: 15px 15px;
     font-family: fontAwesome;
     line-height: 20px;
+  }
+ .main-header .navbar .sidebar-toggle2 {
+    float: left;
+    background-color: transparent;
+    background-image: none;
+    padding: 15px 5px;
+    font-family: fontAwesome;
+    line-height: 20px;
+  }
+ .main-header .navbar .sidebar-toggle2:before {
+    content: "\f04a";
   }
 
   .main-header .navbar .sidebar-toggle:before {

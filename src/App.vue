@@ -1,5 +1,6 @@
 <template>
-  <div class="wrapper fixed">
+<div class="appL" style=";">
+    <div class="comtent">
     <vue-progress-bar></vue-progress-bar>
     <imp-header></imp-header>
     <side-menu></side-menu>
@@ -18,6 +19,8 @@
           </section>
         </el-scrollbar>
       </div>
+</div>
+
   </div>
 </template>
 
@@ -121,7 +124,25 @@
 </script>
 
 <style>
+  .appL{
+    background:url("././assets/bac.jpg"); 
+    width:100%;	
+    height:965px;	
+    position:fixed;
+    background-size:100% 100%;
+  }
+  .comtent{
+    width: 70%;
+    height: auto;
+    /* border: 1px solid red; */
+    border:#909090 1px solid;
+    margin: 100px auto;
+    -moz-box-shadow: 2px 2px 10px #909090;
 
+   -webkit-box-shadow: 2px 2px 10px #909090;
+
+   box-shadow:2px 2px 10px #909090;
+  }
   .animated {
     animation-duration: .2s;
   }
@@ -144,11 +165,15 @@
     -o-transition: -o-transform 0.3s ease-in-out, margin 0.3s ease-in-out;
     transition: transform 0.3s ease-in-out, margin 0.3s ease-in-out;
     margin-left: 230px;
-    padding-top: 50px;
+    padding-top: 20px;
+    height: 650px;
+    background: #e7e6e6;
+    overflow:scroll;
   }
 
   .content-scrollbar{
-    height: calc(100vh - 50px);
+    height: auto;
+    overflow:scroll;
   }
 
   .content-wrapper .el-scrollbar__bar.is-vertical{
