@@ -3,8 +3,27 @@
      
     <el-row :gutter="20" >
         <el-col  :span="12">
-        <div style="margin:100px auto;width:100%;height:100%;text-align:center">
+        <div style="margin:30px auto;width:100%;height:100%;text-align:center">
         <img style="width:300px;height:300px" :src="msg.musicCover" :title="msg.musicName">
+        </div>
+         <div style="width:100%;height:auto;display:flex;margin-left:20px">
+            <div style="width:10%">{{currentMusicTime}}</div>
+            <div style="width:80%;text-align:center"><el-progress style="margin-top:3px" :percentage="currentTime" status="success" ></el-progress></div>
+            <div style="width:10%">{{totalTime}}</div>
+        </div>
+         <div style="width:100%;height:auto;display:flex">
+            <div style="width:20%"></div>
+            <div style="width:20%;text-align:center">
+                <img style="width:80px;height:80px" @click="upxt()" :src="require('../../assets/upxt.png')" alt="">
+            </div>
+            <div style="width:20%;text-align:center">
+                <img style="width:80px;height:80px" v-if="tingzhi"  @click="listening" :src="require('../../assets/bofang.png')" alt="">
+                <img style="width:80px;height:80px" v-if="!tingzhi"   @click="listening" :src="require('../../assets/praus.png')" alt="">
+            </div>
+            <div style="width:20%;text-align:center">
+                <img style="width:80px;height:80px" @click="next()" :src="require('../../assets/next.png')" alt="">
+            </div>
+            <div style="width:20%"></div>
         </div>
         </el-col>
         <el-col :span="12">
@@ -18,26 +37,9 @@
             
         </div>
         <audio v-show="false" ref="player" style="margin-left:60px" :src="audioUrl" width=300 height=45 type=audio/mpeg  controls   volume="0"></audio>
-        <div style="width:100%;height:auto;display:flex">
-            <div style="width:10%">{{currentMusicTime}}</div>
-            <div style="width:80%;text-align:center"><el-progress style="margin-top:3px" :percentage="currentTime" status="success" ></el-progress></div>
-            <div style="width:10%">{{totalTime}}</div>
-        </div>
+       
         
-        <div style="width:100%;height:auto;display:flex">
-            <div style="width:20%"></div>
-            <div style="width:20%;text-align:center">
-                <img style="width:120px;height:120px" @click="upxt()" :src="require('../../assets/upxt.png')" alt="">
-            </div>
-            <div style="width:20%;text-align:center">
-                <img style="width:120px;height:120px" v-if="tingzhi"  @click="listening" :src="require('../../assets/bofang.png')" alt="">
-                <img style="width:120px;height:120px" v-if="!tingzhi"   @click="listening" :src="require('../../assets/praus.png')" alt="">
-            </div>
-            <div style="width:20%;text-align:center">
-                <img style="width:120px;height:120px" @click="next()" :src="require('../../assets/next.png')" alt="">
-            </div>
-            <div style="width:20%"></div>
-        </div>
+       
         </el-col>
     </el-row>
     <div>
@@ -71,27 +73,27 @@ export default {
                tempMusicId:'',
                msg:{
                    
-               }
+               },
+               userName:''
            
         }
       },
      mounted: function () {
           this.queryMusic(this.$route.query.id)
-          
+      this.userName = JSON.parse(sessionStorage.getItem("user-info")).name
       },
       beforeDestroy(){
           this.removeEventHandle()
       },
 methods:{
 queryMusic(id){
-console.log(id);
 this.$http.get(`/api/music/querySingleMusic/?id=` + id).then((response)=>{
           this.msg = response.data.data[0]
           this.tempMusicId = this.msg.id
           this.getGeCi()
           this.getGeCiUrl()
           this.addEventHandle()
-          this.msg['user'] = 'admin'
+        //   this.msg['user'] = 'admin'
           }).catch((response)=>{
             console.log(response);
           })
@@ -124,7 +126,8 @@ upxt(){
             console.log(response);
           })
 },
-listening(){
+async listening(){
+    let index = 0
     if(this.token == 0){
         this.$refs.player.play()
         this.totalTime = this.dealMusicTime(parseInt(this.$refs.player.duration))
@@ -132,9 +135,21 @@ listening(){
         this.tingzhi = true
         this.$refs.lrc.style.top = 0 + 'px'
         this.$refs.player.currentTime = 0
-        this.$http.post(`/api/recent/addRecentPlay`,this.msg).then(res=>{
-          console.log(res);
-        })
+        let user = this.msg
+        user['user'] = this.userName
+        let res = await this.$http.get(`/api/recent/queryAllRecent`)
+        let data = res.data.data
+        for (let i = 0; i < data.length; i++) {
+            if (data[i].name ==  this.msg.musicName && data[i].user ==  this.msg.user) {
+                index = 1
+                break
+            }
+        }
+        if (index != 1) {
+            this.$http.post(`/api/recent/addRecentPlay`,user)
+        }
+        return
+        
     }else{
         this.$refs.player.pause()
         this.token = 0

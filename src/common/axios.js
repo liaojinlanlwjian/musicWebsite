@@ -14,9 +14,9 @@ axios.defaults.headers.common[ 'authSid' ] = auth.getSid();
 
 //POST传参序列化
 axios.interceptors.request.use((config) => {
-  if (config.method === 'post') {
-    config.data = qs.stringify(config.data);
-  }
+  // if (config.method === 'post') {
+  //   config.data = qs.stringify(config.data);
+  // }
   return config;
 }, (error) => {
   return Promise.reject(error);
@@ -24,21 +24,22 @@ axios.interceptors.request.use((config) => {
 
 //返回状态判断
 axios.interceptors.response.use(
-  response => {
-    if (response.data && response.data.code) {
-      if (response.data.code === '2001') {
-        auth.logout()
-      }
-    }
-    return response;
-  },
-  error => {
-    if (error.response) {
-      //全局ajax错误信息提示
-      //MessageBox({type:"error",message:error.response.data,title:"温馨提示",});
-    }
-    //return Promise.reject(error);
-  });
+  // response => {
+  //   if (response.data && response.data.code) {
+  //     if (response.data.code === '2001') {
+  //       auth.logout()
+  //     }
+  //   }
+  //   return response;
+  // },
+  // error => {
+  //   if (error.response) {
+  //     //全局ajax错误信息提示
+  //     //MessageBox({type:"error",message:error.response.data,title:"温馨提示",});
+  //   }
+  //   //return Promise.reject(error);
+  // }
+  );
 
 export function fetch (url, config = { method: 'get' }) {
   return axios.request({ ...config, url })

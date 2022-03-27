@@ -30,7 +30,7 @@
         </el-dropdown>
         <el-dropdown trigger="click" class="navbar-dropdown">
           <div class="el-dropdown-link">
-            <img :src='userInfo.avatar' style="width: 25px;height: 25px;border-radius: 50%; vertical-align: middle;" alt="U">
+            <img :src='userInfo.src' style="width: 25px;height: 25px;border-radius: 50%; vertical-align: middle;" alt="U">
             {{userInfo.name}}
           </div>
           <el-dropdown-menu style="padding: 0px">
@@ -78,6 +78,9 @@
       userInfo: 'userInfo',
       device:'device',
     }),
+    mounted(){
+      console.log("llllll");
+    },
     methods: {
       backRouter(){
         this.$router.go(-1)
@@ -94,6 +97,8 @@
           .then(res => {
             auth.logout();
             this.$http.defaults.headers.common['authSid'] = '';
+            localStorage.clear();
+sessionStorage.clear();
             this.$router.push({path: '/login'});
           }).catch(error => {
             auth.logout();

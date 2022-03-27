@@ -11,16 +11,20 @@
         ref="user"
         label-width="100px"
         label-position="left"
+        v-loading="loading"
+        element-loading-text="拼命加载中"
+        element-loading-spinner="el-icon-loading"
+        element-loading-background="rgba(0, 0, 0, 0.8)"
       >
      
          <div style="width:100%;text-align:center;margin-bottom:15px">
            <div style="width:100px;height:100px;border-radius:100px;background:#fafafa;margin:auto;box-shadow:2px 2px 10px #909090;">
-            <img :src="touxiangSrc" >
+            <img :src="touxiangSrc" style="width:100%;height:100%;border-radius:100px" >
           </div>
-        <el-button round size="mini" @click="selectPic">上传头像</el-button>
+        <el-button round size="mini" style="margin-top:10px" @click="selectPic">更换默认头像</el-button>
          </div>
           
-        <el-form-item label="账号" prop="bianhao">
+        <el-form-item label="账号" prop="acc">
           <el-input
             v-model="user.acc"
             style="width: 100%"
@@ -35,7 +39,7 @@
             placeholder="密码"
           />
         </el-form-item>
-        <el-form-item label="性别">
+        <el-form-item label="性别" prop="sex">
           <el-select v-model="user.sex" placeholder="请选择" >
             <el-option
               v-for="item in sexOptions"
@@ -53,13 +57,13 @@
             placeholder=" 用户名称"
           />
         </el-form-item>
-        <el-form-item label="联系电话" prop="phone">
+        <el-form-item label="联系电话">
           <el-input
             v-model="user.tel"
             style="width: 100%"
           />
         </el-form-item>
-        <el-form-item label="地址" prop="phone">
+        <el-form-item label="地址" prop="adress">
           <el-input
             v-model="user.adress"
             style="width: 100%"
@@ -100,22 +104,23 @@ dialogVisible:{
 },
 data(){
     return{
+      loading:false,
       chooseFile:{},
           fileList:[],
           uploadDialog:false,
         user:{},
-        touxiangSrc:'',
+        touxiangSrc:'http://localhost:3001/img/1648272182282.jpeg',
         rules:{
                  name: [
                 { required: true, message: "请输入姓名", trigger: "blur" },
                 ],
                 psd: [
-                { required: true, message: "请输入地址", trigger: "blur" },
+                { required: true, message: "请输入密码", trigger: "blur" },
                 ],
-                account: [
-                { required: true, message: "请选择用户的部门", trigger: "blur" },
+                sex: [
+                { required: true, message: "请选择性别", trigger: "blur" },
                 ],
-                bianhao:[
+                acc:[
                 { required: true, message: "请输入账号", trigger: "blur" },
                 ],
             },
@@ -129,7 +134,24 @@ data(){
     }
 },
 methods:{
-    confirm(){},
+    confirm(formName){
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            this.user['src'] = this.touxiangSrc
+            let data = this.$qs.stringify(this.user)
+            this.loading = true
+              this.$http.post(`/api/musicUser/addSingMusicUser`,data).then((response)=>{
+                this.$message.success('注册成功，请登录')
+                this.$emit('close-dialog') 
+              }).catch((response)=>{
+                console.log(response);
+              })
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
+    },
     handleClose() { //向父组件传递我要关闭啦 让父组件改变弹窗打开与否的值
       this.$emit('close-dialog') // 关闭弹框 --> 传出自定义事件
     },
@@ -148,11 +170,11 @@ methods:{
           var formData = new FormData()
           //创建formdata对象
           formData.append("file",this.chooseFile.raw)  
-          // console.log(formData);
-          // return
           // 将文件信息 append 进入formdata对象  key值 为后台 single 设置的值  
-          this.$http.post('/api/music/upload',{
-            formData,
+          this.$http.post('/api/music/upload',formData,{
+            Headers:{
+              "Content-Type":"multipart/form-data"
+            }
           }).then(res=>{
             this.uploadDialog = false
             this.$message.success('上传成功')

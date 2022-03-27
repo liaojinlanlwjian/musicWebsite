@@ -74,8 +74,8 @@
           dialogVisible:false,
           
         form: {
-          username: '',
-          password: '',
+          username: '123',
+          password: '123',
         }
       }
     },
@@ -88,24 +88,43 @@
         loadMenuList: 'loadMenuList' // 映射 this.load() 为 this.$store.dispatch('loadMenuList')
       }),
       ecroll(){
-        console.log('000');
         this.dialogVisible = true
       },
-      login(){
+      async login(){
+        if (this.form.username == null||this.form.username == ''||this.form.password == null||this.form.password == '') {
+         this.$message.error('账号密码不能为空')
+         return
+       }
         var redirectUrl = '/';
         if (this.$route.query && this.$route.query != null && this.$route.query.redirect && this.$route.query.redirect != null) {
           redirectUrl = this.$route.query.redirect;
         }
-        sysApi.login(this.form).then(res => {
-          this.loginSuccess({...res,redirectUrl})
-        })
+        try {
+            let res = await this.$http.get(`/api/musicUser/loginVerifyMusicUser`,{
+                params:{
+                    acc:this.form.username,
+                    psd:this.form.password
+                }
+              })
+            this.$message.success('登录成功')
+            sessionStorage.setItem("insuranceCode", JSON.stringify(res.data.data[0]));
+            sessionStorage.setItem("user-info", JSON.stringify(res.data.data[0]));
+           sysApi.login(res.data.data[0]).then(res => {
+             console.log(res);
+            this.loginSuccess({...res,redirectUrl})
+          })
+          } catch (error) {
+            this.$message.error('用户名或者密码错误')
+          }
+        
       },
       loginSuccess({sid,user,redirectUrl}){
+        console.log(user.name);
         auth.login(sid);
-        window.sessionStorage.setItem("user-info", JSON.stringify(user));
+        
         this.setUserInfo(user);
         this.$http.defaults.headers.common['authSid'] = sid;
-        this.loadMenuList();
+        
         redirectUrl && this.$router.push({path: redirectUrl});
       },
       

@@ -20,27 +20,27 @@
   <div v-for="(o,i) in recent" :key="i" class="text item" style="padding-bottom:10px">
                 <el-card shadow="hover" >
                <div style="display:flex">
-                   <div style="width:5%;height:100%;text-align:center;line-height:100px">
+                   <div style="width:5%;height:100%;text-align:center; line-height: 50px;">
                        <span style="font-size:18px;">{{i+1}}</span>
                    </div>
                    <div style="width:12%;text-align:center;position: relative;"  @click="jumpMusic(o)" >
                       <img
-                        style="width:100%;"
+                        style="width:100%; height: 50px"
                         :src="o.cover">
                     <!-- <div class="player"></div> -->
                    </div>
-                   <div style="width:20%;text-align:center;padding:10px" @click="jumpMusic(o)" >
-                       <div style="margin:20px auto">
+                   <div style="width:12%;text-align:center" @click="jumpMusic(o)" >
+                       <div style="">
                            <div>
                           <span>{{ o.name }}</span>
                             </div>
-                            <div>
+                            <div style="margin-top: 10px">
                                 <span>{{ o.singer }}</span>
                             </div>
                        </div>
                       
                    </div>
-                   <div style="width:80%;height:100%;text-align:right;line-height:100px">
+                   <div style="width:80%;height:100%;text-align:right;margin-top: 10px;">
                        <el-button style="border-radius:14px" @click="likeClick(o)" ref="rrrr" ><i class="fa fa-heart" ref="likeIcon"></i></el-button>
                        <el-button style="border-radius:14px"  @click="jumpMusic(o)"  circle><i class="fa fa-play" ref="likeIcon"></i></el-button>
                    </div>
@@ -55,16 +55,18 @@
 export default {
    data() {
       return {
-        recent:[]
+        recent:[],
+        userName:''
       }
     },
   mounted(){
+      this.userName = JSON.parse(sessionStorage.getItem("insuranceCode")).name
       this.queryAllRecent()
+      
   },
   methods: {
     queryAllRecent(){
-        this.$http.get('/api/recent/queryAllRecent').then((response)=>{
-            console.log(response.data.data);
+        this.$http.get('/api/recent/queryAllUserRecent/?user=' + this.userName).then((response)=>{
             this.recent = response.data.data
           }).catch((response)=>{
             console.log(response);
