@@ -166,7 +166,8 @@
     transition: transform 0.3s ease-in-out, margin 0.3s ease-in-out;
     margin-left: 230px;
     padding-top: 20px;
-    height: 532px;
+    /* height: 532px; */
+    height: 650px;
     background: #e7e6e6;
     overflow:scroll;
   }

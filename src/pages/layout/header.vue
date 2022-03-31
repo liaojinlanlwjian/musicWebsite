@@ -15,7 +15,7 @@
         <el-dropdown class="navbar-dropdown" trigger="click">
           <div class="el-dropdown-link" style="height: auto;line-height: inherit">
             <el-badge :value="count" class="item">
-            <i class="fa fa-envelope-o"></i>
+            <i class="fa fa-envelope-o" style="color:#fff"></i>
             </el-badge>
           </div>
           <el-dropdown-menu>
@@ -187,14 +187,16 @@ sessionStorage.clear();
   }
  .main-header .navbar .sidebar-toggle2:before {
     content: "\f04a";
+    color: #ffffff;
   }
 
   .main-header .navbar .sidebar-toggle:before {
     content: "\f03b";
+    color: #ffffff;
   }
 
   .main-header {
-    background-color: #ffffff;
+    background-color: #ec4141;
   }
 
   .main-header .logo {
@@ -220,6 +222,7 @@ sessionStorage.clear();
     height: 38px;
     line-height: 38px;
     margin-top: 6px;
+    color: #ffffff;
   }
 
   .main-header .navbar {
@@ -231,7 +234,7 @@ sessionStorage.clear();
     border: none;
     min-height: 50px;
     border-radius: 0;
-    background-color: #ffffff;
+    background-color: #ec4141;
   }
 
   .layout-top-nav .main-header .navbar {
@@ -251,7 +254,7 @@ sessionStorage.clear();
   }
 
   .main-header .navbar .sidebar-toggle:hover {
-    background: #f9f9f9;
+    background: #f09898;
   }
 
   .main-header .logo {
@@ -287,7 +290,7 @@ sessionStorage.clear();
     display: none;
   }
   .main-header.closeLogo .sidebar-toggle {
-    background: #f9f9f9;
+    background: #f09898;
   }
 
   .main-header.closeLogo .navbar .sidebar-toggle:before {
@@ -314,7 +317,7 @@ sessionStorage.clear();
   }
 
   .navbar-custom-menu .el-dropdown-link:hover{
-    background: #f9f9f9;
+    background: #f09898;
   }
   .message-list {
     list-style: none;
@@ -330,7 +333,7 @@ sessionStorage.clear();
     color: #666666;
   }
   .message-list li:hover{
-    background-color: #f9f9f9;
+    background-color: #f09898;
   }
 
   .el-dropdown-menu .header-pic{

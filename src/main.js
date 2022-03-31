@@ -13,6 +13,11 @@ import ImpPanel from "./components/panel.vue";
 import vueAplayer from 'vue-aplayer'
 import AudioVisual from 'vue-audio-visual'
 import qs from 'qs'
+import VideoPlayer from 'vue-video-player'
+require('video.js/dist/video-js.css')
+require('vue-video-player/src/custom-theme.css')
+Vue.use(VideoPlayer)
+
 Vue.use(AudioVisual)
 Vue.use(vueAplayer)
 Vue.prototype.$http = axios

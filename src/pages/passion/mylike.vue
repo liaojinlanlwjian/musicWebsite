@@ -12,7 +12,7 @@
         </div>
         </div>
         <div style="display:flex;margin-left:12%;flex-flow:wrap">
-            <div v-for="o in mylike" :key="o" class="text item" style="padding-right:30px;padding-top:10px">
+            <div v-for="o in mylike" :key="o.id" class="text item" style="padding-right:30px;padding-top:10px">
             <el-card class="box-card" style="position: relative;width:180px">
                  <img
                 style="width:100%;height:80px"
@@ -40,7 +40,6 @@ export default {
 mounted(){
     this.userName = JSON.parse(sessionStorage.getItem("user-info")).name;
     this.queryAllLike()
-()
 },
 methods:{
     async queryAllLike(){

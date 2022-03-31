@@ -21,6 +21,8 @@ import playlist from "../pages/musicPage/playlist.vue";
 import mylike from "../pages/passion/mylike.vue";
 import radio from "../pages/passion/radio.vue";
 import singlist from "../pages/passion/singlist.vue";
+import mv from "../pages/passion/mv.vue";
+import mvplay from "../pages/passion/mvplay.vue";
 import index from "../pages/index/index.vue";
 import musicdetail from "../pages/musicPage/musicdetail.vue";
 import musicPlayer from "../pages/musicPage/musicPlayer.vue";
@@ -39,6 +41,8 @@ const routes = [
     {path: '/passion/mylike', component: mylike},
     {path: '/passion/radio', component: radio},
     {path: '/passion/singlist', component: singlist},
+    {path: '/passion/mv', component: mv},
+    {path: '/passion/mvplay', component: mvplay},
     {path: '/musicPage/musicdetail', component: musicdetail},
     {path: '/musicPage/musicPlayer', component: musicPlayer},
     {path: '/resetPwd', component: resetPwd},
