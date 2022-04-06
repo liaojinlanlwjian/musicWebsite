@@ -18,29 +18,22 @@
       </el-carousel-item>
     </el-carousel>
     <div>
-      <div style="display: flex; width: 100%; height: 80px; line-height: 80px">
+      <div
+        style="
+          display: flex;
+          width: 90%;
+          margin: 0px auto;
+          height: 80px;
+          line-height: 80px;
+        "
+      >
         <div style="width: 70%">
-          <el-dropdown>
-            <span
-              class="el-dropdown-link"
-              style="color: #222222; font-size: 26px"
-            >
-              即时热门<i class="el-icon-arrow-down el-icon--right"></i>
-            </span>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item icon="el-icon-plus">黄金糕</el-dropdown-item>
-              <el-dropdown-item icon="el-icon-circle-plus"
-                >狮子头</el-dropdown-item
-              >
-              <el-dropdown-item icon="el-icon-circle-plus-outline"
-                >螺蛳粉</el-dropdown-item
-              >
-              <el-dropdown-item icon="el-icon-check">双皮奶</el-dropdown-item>
-              <el-dropdown-item icon="el-icon-circle-check"
-                >蚵仔煎</el-dropdown-item
-              >
-            </el-dropdown-menu>
-          </el-dropdown>
+          <span
+            class="el-dropdown-link"
+            style="color: #222222; font-size: 26px"
+          >
+            即时热门<i class="el-icon-arrow-down el-icon--right"></i>
+          </span>
         </div>
         <div style="width: 15%; text-align: center">
           <el-button style="color: #222222; border-radius: 10px"
@@ -63,7 +56,14 @@
           class="text item"
           style="padding-bottom: 10px"
         >
-          <el-card shadow="hover">
+          <div
+            style="
+              padding: 10px;
+              background: #fff;
+              box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+              border-radius: 10px;
+            "
+          >
             <div style="display: flex">
               <div
                 style="
@@ -75,19 +75,25 @@
               >
                 <span style="font-size: 18px">{{ i + 1 }}</span>
               </div>
-              <div
-                style="width: 12%; text-align: center; position: relative"
-                @click="jumpMusic(o)"
-              >
-                <img style="width: 100%; height: 50px" :src="o.musicCover" />
+              <div style="width: 10%; position: relative" @click="jumpMusic(o)">
+                <img
+                  style="width: 100%; height: 50px; border-radius: 50%"
+                  :src="o.musicCover"
+                />
                 <!-- <div class="player"></div> -->
               </div>
-              <div style="width: 20%; text-align: center" @click="jumpMusic(o)">
+              <div
+                style="width: 50%; padding: 5px 10px 0px 10px"
+                @click="jumpMusic(o)"
+              >
                 <div>
                   <div>
-                    <span>{{ o.musicName }}</span>
+                    <span>{{ o.musicName }}</span
+                    ><em style="margin-left: 5px; font-size: 6px"
+                      >({{ o.musicMsg }})</em
+                    >
                   </div>
-                  <div style="margin-top: 10px">
+                  <div style="margin-top: 5px; font-size: 12px">
                     <span>{{ o.musicAuthor }}</span>
                   </div>
                 </div>
@@ -100,12 +106,17 @@
                   margin-top: 10px;
                 "
               >
-                <el-popover  style="margin-right:8px" placement="left" width="350" trigger="click">
+                <el-popover
+                  style="margin-right: 8px"
+                  placement="left"
+                  width="350"
+                  trigger="click"
+                >
                   <el-table :data="gridData" v-loading="loadingSing">
                     <el-table-column
                       width="100"
-                      property="value"
-                      label="日期"
+                      property="created_by"
+                      label="创建人"
                     ></el-table-column>
                     <el-table-column
                       width="100"
@@ -144,7 +155,7 @@
                 ></el-button>
               </div>
             </div>
-          </el-card>
+          </div>
         </div>
       </div>
     </div>
@@ -301,27 +312,19 @@
           >
         </div>
       </div>
-      <div style="display: flex; margin-left: 8%">
-        <div
-          v-for="o in 5"
-          :key="o"
-          class="text item"
-          style="padding-right: 50px"
-        >
-          <el-card class="box-card">
-            <img
-              style="width: 100%"
-              :src="require('../../assets/liebiao1.jpg')"
-            />
-            <div><h3>摇滚推荐</h3></div>
-            <div><p>推荐歌单</p></div>
-            <div style="margin: 5px">
-              <el-button size="small" circle>label</el-button>
+      <div style="width:90%;display: flex;flex-wrap: wrap;margin: 0px auto;">
+        <div v-for="o in playListData" @click="jumpPlayListDetail(o)" :key="o.id" style="width:160px;margin:30px">
+            <div style="width: 140px; height: 140px">
+              <img
+                style="width: 100%; height: 100%"
+                :src="o.cover"
+              />
             </div>
+            <div><h3>{{ o.name }}推荐</h3></div>
+            <div><p>推荐歌单</p></div>
             <div style="width: 90%; margin: 10px 0px 10px 0px"><hr /></div>
-            <div><p>50首歌曲</p></div>
-            <div><p>发表更新于2022年01-27</p></div>
-          </el-card>
+            <div><p>{{ o.msg }}</p></div>
+            <div><p>发表更新于{{ o.created_time }}</p></div>
         </div>
       </div>
     </div>
@@ -334,6 +337,8 @@ export default {
   components: {},
   data() {
     return {
+      playListData:[],
+      tokenSingMusic: 0,
       userName: "",
       value: false,
       imgList: [
@@ -366,30 +371,81 @@ export default {
       recommend: [],
       loadingSing: false,
       gridData: [],
-      musicMsg:{}
+      musicMsg: {},
     };
   },
   created() {},
   mounted: function () {
     this.queryData();
+    this.queryPlayListData();
     this.userName = JSON.parse(sessionStorage.getItem("user-info")).name;
   },
   computed: {},
   methods: {
-    async handleConfirm(index,row) {
-       try {
-        this.musicMsg['singListId'] = row.id
-        this.musicMsg['user'] = this.userName
-        let data = this.$qs.stringify(this.musicMsg);
-        await this.$http.post(`/api/singlistmusic/addSingListMusic`, data);
-        this.$message.success("已加入该歌单");
+    jumpPlayListDetail(o){
+      this.$router.push({
+        path: "/musicPage/playListMusic",
+        query: { id: o.id },
+      });
+    },
+    async queryPlayListData(){
+      try {
+        let res = await this.$http.get(
+          `/api/playlist/queryAllplaylistcommend`
+        );
+        console.log("o");
+        this.playListData = res.data.data;
+        console.log(this.playListData);
       } catch (error) {
         this.$message.error("失败啦");
-      }  
+      } 
+    },
+    //获取用户歌单中的所有的音乐 并且进行判断数据是否一样
+    async queryUserSingMusic(row) {
+      // console.log(this.musicMsg);
+      try {
+        let res = await this.$http.get(
+          `/api/singlistmusic/getAllListMusic/?user=` + this.userName
+        );
+        let data = res.data.data;
+        for (let i = 0; i < data.length; i++) {
+          if (
+            data[i].musicName === this.musicMsg.musicName &&
+            parseInt(data[i].singListId) === row.id
+          ) {
+            this.tokenSingMusic = 1;
+            break;
+          } else {
+            this.tokenSingMusic = 0;
+          }
+        }
+      } catch (error) {
+        this.$message.error("失败啦");
+      }
+    },
+    async handleConfirm(index, row) {
+      this.queryUserSingMusic(row).then((res) => {
+        if (this.tokenSingMusic == 1) {
+          this.$message.error("该歌曲已存在此歌单");
+        } else {
+          try {
+            this.musicMsg["musicId"] = this.musicMsg.id;
+            this.musicMsg["singListId"] = row.id;
+            this.musicMsg["user"] = this.userName;
+            let data = this.$qs.stringify(this.musicMsg);
+            this.$http
+              .post(`/api/singlistmusic/addSingListMusic`, data)
+              .then((res) => {
+                this.$message.success("已加入该歌单");
+              });
+          } catch (error) {
+            this.$message.error("失败啦");
+          }
+        }
+      });
     },
     async qureySingList(o) {
-      console.log(o);
-      this.musicMsg = o
+      this.musicMsg = o;
       this.loadingSing = true;
       try {
         let res = await this.$http.get(
@@ -414,7 +470,7 @@ export default {
     },
     jumpMusic(o) {
       this.$router.push({
-        path: "/musicPage/musicdetail",
+        path: "/musicPage/musicPlayer",
         query: { id: o.id },
       });
     },
@@ -439,11 +495,12 @@ export default {
       });
     },
     async likeClick(i, o) {
+      console.log(o);
       if (this.$refs.rrrr[i].$el.style.color == "rgb(249, 89, 95)") {
         this.$refs.rrrr[i].$el.style.color = "";
         this.$refs.rrrr[i].$el.style.border = "";
         try {
-          await this.$http.delete("/api/like/deleteLike/?id=" + o.id);
+          await this.$http.delete("/api/like/deleteLike/?musicId=" + o.id);
           this.$message.error("已从我的喜欢列表移除");
         } catch (error) {
           this.$message.error("失败了");
@@ -454,6 +511,7 @@ export default {
       this.$refs.rrrr[i].$el.style.border = "1px solid #f9595f";
       let data = o;
       data["user"] = this.userName;
+      data["musicId"] = o.id;
       try {
         await this.$http.post("/api/like/addLike", this.$qs.stringify(data));
         this.$message.success("已添加进我的喜欢列表");

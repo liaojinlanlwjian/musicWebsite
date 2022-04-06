@@ -8,7 +8,7 @@
         </div>
         <div style="width:35%;height:auto;line-height:50px;padding: 0px 30px;position:absolute;top:100px;left:40%">
           <div>
-            <h1 style="color:#ffffff;font-size:34px">{{ msg.name }}</h1>
+            <h1 style="color:#ffffff;font-size:18px">{{ msg.name }}</h1>
             <p style="color:#c7c0bd;font-size:24px">by-{{ msg.created_by }}<p/>
             <p style="color:#c7c0bd;font-size:24px">{{ msg.created_time }}<p/>
           </div>
@@ -40,7 +40,6 @@
                    </div>
                    <div style="width:80%;height:100%;text-align:right;margin-top: 10px;">
                        <el-button style="border-radius:14px"  @click="jumpMusic(o)"  circle><i class="fa fa-play" ref="likeIcon"></i></el-button>
-                       <el-button style="border-radius:14px"  @click="deleteSingListMusic(index,o)"  circle><i class="fa fa-times" ref="likeIcon"></i></el-button>
                    </div>
                </div>
             </div>
@@ -74,21 +73,9 @@ export default {
         query: { id: o.musicId },
       });
     },
-    //从该歌单中删除歌曲
-      async deleteSingListMusic(index, row) {
-      try {
-        let res = await this.$http.delete(
-          `/api/singlistmusic/deleteSingListMusic?id=` + row.id
-        );
-        this.$message.success("已从该歌单中移除");
-        this.qureySingListMusic(this.$route.query.id);
-      } catch (error) {
-        this.$message.error("失败啦");
-      }
-    },
     async querySingList(id){
       try {
-        let res = await this.$http.get(`/api/singlist/seacrSingList/?id=` + id);
+        let res = await this.$http.get(`/api/playlist/getSingplaylistcommend/?id=` + id);
         this.msg = res.data.data[0]
       } catch (error) {
         this.$message.error("失败啦");
@@ -97,14 +84,12 @@ export default {
     async qureySingListMusic(id) {
       this.loadingSing = true
       try {
-        let res = await this.$http.get(`/api/singlistmusic/getSingListMusic`, {
+        let res = await this.$http.get(`/api/playlistmusic/queryByPageplaylistmusic`, {
           params: {
-            user: this.userName,
-            singListId: id,
+            playListId: id,
           },
         });
         this.loadingSing = false;
-        console.log(res.data.data);
         this.gridData = res.data.data;
       } catch (error) {
         this.$message.error("失败啦");

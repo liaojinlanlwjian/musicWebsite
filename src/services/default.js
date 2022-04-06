@@ -9,11 +9,11 @@ export default {
   menuList:[
   {"id":122,"parentId":null,"sort":3,"name":"首页","href":"/","icon":"fa fa-globe","children":[],"isShow":"1"},
 
-  {"id":92,"parentId":31,"sort":0,"name":"搜索","href":"/musicPage/musicSearch","icon":"fa fa-search","children":[],"isShow":"1"},
   {"id":94,"parentId":31,"sort":2,"name":"最近播放","href":"/musicPage/playlist","icon":"fa fa-play-circle","children":[],"isShow":"1"},
 {"id":194,"parentId":131,"sort":2,"name":"喜欢","href":"/passion/mylike","icon":"fa fa-heart","children":[],"isShow":"12"},
 {"id":1940,"parentId":131,"sort":2,"name":"歌单","href":"/passion/singlist","icon":"fa fa-list-alt","children":[],"isShow":"19"},
 {"id":1942,"parentId":131,"sort":2,"name":"mv","href":"/passion/mv","icon":"fa fa-video-camera","children":[],"isShow":"19"},
+{"id":1943,"parentId":131,"sort":2,"name":"歌手","href":"/passion/singer","icon":"fa fa-users","children":[],"isShow":"19"},
 {"id":192,"parentId":131,"sort":0,"name":"广播电台","href":"/passion/radio","icon":"fa fa-headphones","children":[],"isShow":"11"},
 
 

@@ -17,12 +17,15 @@ import carSearch from "../pages/system/search.vue";
 import workstation from "../pages/system/workstation.vue";
 import data from "../pages/system/data.vue";
 import musicSearch from "../pages/musicPage/search.vue";
+import playListMusic from "../pages/musicPage/playListMusic.vue";
 import playlist from "../pages/musicPage/playlist.vue";
 import mylike from "../pages/passion/mylike.vue";
 import radio from "../pages/passion/radio.vue";
 import singlist from "../pages/passion/singlist.vue";
 import mv from "../pages/passion/mv.vue";
 import mvplay from "../pages/passion/mvplay.vue";
+import singer from "../pages/passion/singer.vue";
+import singerMusic from "../pages/passion/singerMusic.vue";
 import index from "../pages/index/index.vue";
 import musicdetail from "../pages/musicPage/musicdetail.vue";
 import musicPlayer from "../pages/musicPage/musicPlayer.vue";
@@ -43,7 +46,10 @@ const routes = [
     {path: '/passion/singlist', component: singlist},
     {path: '/passion/mv', component: mv},
     {path: '/passion/mvplay', component: mvplay},
+    {path: '/passion/singer', component: singer},
+    {path: '/passion/singerMusic', component: singerMusic},
     {path: '/musicPage/musicdetail', component: musicdetail},
+    {path: '/musicPage/playListMusic', component: playListMusic},
     {path: '/musicPage/musicPlayer', component: musicPlayer},
     {path: '/resetPwd', component: resetPwd},
     {path: '/', component: index},

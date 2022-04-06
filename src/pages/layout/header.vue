@@ -11,23 +11,31 @@
       <a href="#" class="sidebar-toggle2"  role="button"
          @click.stop.prevent="backRouter">
       </a>
-      <div class="navbar-custom-menu">
-        <el-dropdown class="navbar-dropdown" trigger="click">
-          <div class="el-dropdown-link" style="height: auto;line-height: inherit">
-            <el-badge :value="count" class="item">
+      <div class="navbar-custom-menu" style="display:flex">
+        <!-- <el-dropdown class="navbar-dropdown" trigger="click"> -->
+          <!-- <div class="el-dropdown-link" style="height: auto;line-height: inherit"> -->
+            <!-- <el-badge :value="count" class="item">
             <i class="fa fa-envelope-o" style="color:#fff"></i>
-            </el-badge>
-          </div>
-          <el-dropdown-menu>
+            </el-badge> -->
+            <div style="padding:6px">
+
+         
+            <el-input placeholder="请输入内容" v-model="searchValue" class="input-with-select">
+   
+    <el-button slot="append"><i class="fa fa-search" style="color:#ec4141" @click="searchNow"></i></el-button>
+  </el-input>
+     </div>
+          <!-- </div> -->
+          <!-- <el-dropdown-menu>
             <ul class="message-list">
-            <li v-for="(item,index) in list"><!-- start message -->
+            <li v-for="(item,index) in list">
             <router-link :to="{path:'/sys/message',query:{id:item.id}}">
             <p>{{index + 1}}. {{item.title}}</p>
             </router-link>
             </li>
             </ul>
           </el-dropdown-menu>
-        </el-dropdown>
+        </el-dropdown> -->
         <el-dropdown trigger="click" class="navbar-dropdown">
           <div class="el-dropdown-link">
             <img :src='userInfo.src' style="width: 25px;height: 25px;border-radius: 50%; vertical-align: middle;" alt="U">
@@ -66,6 +74,7 @@
   export default {
     data(){
       return {
+        searchValue:'',
         showMessageBox: false,
         showProfileBox: false,
         list: [],
@@ -79,9 +88,19 @@
       device:'device',
     }),
     mounted(){
-      console.log("llllll");
+      // console.log("llllll");
     },
     methods: {
+      searchNow(){
+        if (this.searchValue === '') {
+          this.$message.error('请输入检索数据')
+          return
+        }
+        this.$router.push({
+        path: "/musicPage/musicSearch",
+        query: { value:this.searchValue },
+      });
+      },
       backRouter(){
         this.$router.go(-1)
       },
@@ -308,7 +327,7 @@ sessionStorage.clear();
   .navbar-custom-menu .el-dropdown-link{
     cursor: pointer;
     height: 50px;
-    padding: 13px 5px;
+    padding: 13px 15px;
     min-width: 50px;
     text-align: center;
   }
