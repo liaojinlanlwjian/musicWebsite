@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "animate.css": "3.5.2",
+    "aplayer": "^1.10.1",
     "axios": "^0.16.2",
     "babel-polyfill": "^6.26.0",
     "echarts": "^3.5.1",

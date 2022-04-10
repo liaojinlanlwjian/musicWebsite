@@ -32,7 +32,7 @@
             class="el-dropdown-link"
             style="color: #222222; font-size: 26px"
           >
-            即时热门<i class="el-icon-arrow-down el-icon--right"></i>
+            即时热门
           </span>
         </div>
         <div style="width: 15%; text-align: center">
@@ -159,114 +159,32 @@
         </div>
       </div>
     </div>
-    <div style="display: flex; width: 90%; margin: 0px auto">
-      <div style="width: 50%">
-        <div
-          style="
-            width: 100%;
-            height: 80px;
-            line-height: 80px;
-            text-align: left;
-            color: #222222;
-            font-size: 24px;
-          "
-        >
-          派歌
+    <div style="display: flex; width: 90%; margin: 0px auto;flex-wrap:wrap">
+      <div style="display: flex; width: 100%; height: 80px; line-height: 80px">
+        <div style="width: 80%">
+          <h1>推荐电台</h1>
         </div>
-        <div
-          style="
-            width: 100%;
-            height: auto;
-            background: #555b5e;
-            text-align: center;
-          "
-        >
-          <img
-            style="max-width: 100%; max-height: 80%"
-            :src="require('../../assets/paige.jpg')"
-          />
-          <div>
-            <h1 style="color: #ffffff">
-              【独“字”玩乐】谁说这里“无独有偶”？才不！
-            </h1>
-            <span style="color: #bdc3c5">
-              今年有一个形式特殊的日子—2022年2月22日，在这一天不仅包含了近些年来日期的最大“含2量”，同时也歪打正着到农历的正月二十二以及星期二。如果你下次再要打卡这么一个外显特殊的时间，大概需要再等个两</span
-            >
-          </div>
-        </div>
+        <div style="width: 10%; text-align: center"></div>
       </div>
-      <div style="width: 50%; margin-left: 10%">
-        <div
-          style="
-            width: 100%;
-            height: 80px;
-            line-height: 80px;
-            text-align: left;
-            color: #222222;
-            font-size: 24px;
-          "
-        >
-          大事
-        </div>
-        <div
-          style="width: 100%; display: flex; height: 230px; background: #4a303e"
-        >
-          <div
-            style="
-              width: 50%;
-              display: flex;
-              justify-content: center;
-              align-items: center;
-            "
-          >
-            <img
-              style="max-width: 100%; max-height: 100%"
-              :src="require('../../assets/dashi1.jpg')"
-            />
+        <div v-for="o in radioData" :key="o.id"  style="width:45%;height:auto;display:flex;margin:12px 18px" @click="playerRadio(o)">
+          <div style="width:25%;height:80px;position: relative;">
+            <img :src="o.picUrl" style="width:100%;height:100%;border-radius:10px" alt="">
+            <div style="border-radius:10px 0px;width:100%;background:#e7e6e6;opacity:0.2;height:15px;position: absolute;bottom:0">
+             <i class="fa fa-play-circle-o" style="position:absolute;right:10px;color:red" aria-hidden="true"></i>
+            </div>
           </div>
-          <div>
-            <div style="padding: 24% 5%">
-              <h1 style="color: #ffffff">
-                Favours!偏袒乐队：巡演在外，帽子也能当眼罩用
-              </h1>
-              <span style="color: #bdc3c5">一场电子摇滚演出的背后</span>
+          <div style="width:75%">
+            <div style="width:90%;height:60px;margin:10px auto">
+              <p style="height:auto;font-size: 13px;color:#24292f">{{ o.copywriter }}</p>
+              <em style="font-size:8px;color:#67696d">{{ o.name }}</em>
             </div>
           </div>
         </div>
-        <div
-          style="
-            width: 100%;
-            display: flex;
-            height: 230px;
-            background: #10100f;
-            margin-top: 40px;
-          "
-        >
-          <div
-            style="
-              width: 50%;
-              display: flex;
-              justify-content: center;
-              align-items: center;
-            "
-          >
-            <img
-              style="max-width: 100%; max-height: 100%"
-              :src="require('../../assets/dashi2.jpg')"
-            />
-          </div>
-          <div>
-            <div style="padding: 24% 5%">
-              <h1 style="color: #ffffff">
-                女性音乐人特辑：希望不要继续忽略弱者的痛楚
-              </h1>
-              <span style="color: #bdc3c5"
-                >借歌曲去表达自己当下最真实的情绪状态。</span
-              >
-            </div>
-          </div>
-        </div>
-      </div>
+    </div>
+        <div v-if="playerShow" style="position:fixed;bottom:130px"> 
+      <player 
+      :play-data="playData"
+      ></player>
     </div>
     <div style="width: 90%; margin: 0px auto">
       <div style="display: flex; width: 100%; height: 80px; line-height: 80px">
@@ -328,60 +246,80 @@
         </div>
       </div>
     </div>
+
+    
   </div>
 </template>
  
 <script>
 const API_PROXY = "https://bird.ioliu.cn/v1/?url=";
+import player from '../musicPage/compents/player.vue'
 export default {
-  components: {},
+  components: {player},
   data() {
     return {
+      playData:[],
+      playerShow:false,
       playListData:[],
       tokenSingMusic: 0,
       userName: "",
       value: false,
-      imgList: [
-        {
-          id: "1",
-          src: require("../../assets/lubo1.jpg"),
-          title: "plan B",
-        },
-        {
-          id: "2",
-          src: require("../../assets/lubo2.jpg"),
-          title: "电线杆上的鸟",
-        },
-        {
-          id: "3",
-          src: require("../../assets/lubo3.jpg"),
-          title: "钞能力",
-        },
-        {
-          id: "4",
-          src: require("../../assets/lubo4.jpg"),
-          title: "周年庆",
-        },
-        {
-          id: "5",
-          src: require("../../assets/lubo5.jpg"),
-          title: "走么？",
-        },
-      ],
+      imgList: [],
       recommend: [],
       loadingSing: false,
       gridData: [],
       musicMsg: {},
+      radioData:[]
     };
   },
   created() {},
   mounted: function () {
     this.queryData();
+    this.queryRadio();
+    this.querySlidesShow();
     this.queryPlayListData();
     this.userName = JSON.parse(sessionStorage.getItem("user-info")).name;
   },
   computed: {},
   methods: {
+    async playerRadio(data){
+      this.playerShow = false
+      let playData = await this.$http.get('/proxy/song/url?id=' + data.program.mainSong.id)
+      this.playerShow = true
+      let arr = []
+      let obj = {}
+      obj['name'] = data.name
+      obj['artist'] = data.copywriter
+      obj['url'] = playData.data.data[0].url
+      obj['cover'] = data.picUrl
+      obj['lrc'] = ""
+      obj['theme'] = "rgb(127, 218, 180)"
+      arr.push(obj)
+      this.playData = arr
+    },
+    //获取推荐电台
+    queryRadio(){
+       this.$http
+        .get('/proxy/personalized/djprogram/?limit=1')
+        .then((response) => {
+          console.log(response.data.result);
+          this.radioData = response.data.result;
+        })
+        .catch((response) => {
+          console.log(response);
+        });
+    },
+    //获取轮播图
+    querySlidesShow(){
+       this.$http
+        .get("/api/slideshow/getslideshow")
+        .then((response) => {
+          this.imgList = response.data.data;
+        })
+        .catch((response) => {
+          console.log(response);
+        });
+    },
     jumpPlayListDetail(o){
       this.$router.push({
         path: "/musicPage/playListMusic",
@@ -393,9 +331,7 @@ export default {
         let res = await this.$http.get(
           `/api/playlist/queryAllplaylistcommend`
         );
-        console.log("o");
         this.playListData = res.data.data;
-        console.log(this.playListData);
       } catch (error) {
         this.$message.error("失败啦");
       } 
